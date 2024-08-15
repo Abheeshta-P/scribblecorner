@@ -215,16 +215,13 @@ toolBox.addEventListener('touchstart',(mouse)=>{
 //change color and width
 document.querySelectorAll('.basic_color_picker').forEach((picker)=>{
   picker.addEventListener('click',()=> color = window.getComputedStyle(picker).backgroundColor)
-  // picker.addEventListener('touchstart', () => color = window.getComputedStyle(picker).backgroundColor);
 })
 
 advancedPicker.addEventListener('input',()=> color=advancedPicker.value)
-// advancedPicker.addEventListener('touchstart',()=> color=advancedPicker.value)
-// advancedPicker.addEventListener('touchmove',()=> color=advancedPicker.value)
+
 
 widthPicker.addEventListener('input',()=>width=widthPicker.value)
-// widthPicker.addEventListener('touchstart',()=>width=widthPicker.value)
-// widthPicker.addEventListener('touchmove',()=>width=widthPicker.value)
+
 
 
 //draw
@@ -245,13 +242,12 @@ canvas.addEventListener("mouseup",stopErasing,false)
 
 
 pencilEraser.addEventListener('click',pencilEraserSwitcher)
-pencilEraser.addEventListener('touchstart',pencilEraserSwitcher)
 
 //undo and clear canvas
 document.getElementById('undo').addEventListener('click',undo)
-// document.getElementById('undo').addEventListener('touchstart', undo);
+
 document.getElementById('clear').addEventListener('click',clear)
-// document.getElementById('clear').addEventListener('touchstart', clear);
+
 
 //for download
 downloadButton.addEventListener('click',()=>{
