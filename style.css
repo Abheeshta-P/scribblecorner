@@ -68,7 +68,7 @@ body{
   /* cursor: url('/image/cursor.png'),auto; */
 }
 #width_setter{
-  width: 150px;
+  width: 100px;
 }
 
 .pen_eraser{
@@ -96,6 +96,10 @@ body{
   height: 100%;
   z-index: 1;
 }
+input {
+  pointer-events: auto; 
+  z-index: 1000000;
+}
 /* sm */
 @media (min-width: 640px) {
   .tool_box{
@@ -105,6 +109,9 @@ body{
   .button{
     padding: 0.7em 1.5em;
     font-size: 14px;
+  }
+  #width_setter{
+    width: 150px;
   }
   .basic_color_picker{
     width: 30px;

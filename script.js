@@ -140,7 +140,6 @@ function eraseIT(mouse){
 
 function startErasing(mouse){
   isErasing=true
-  mouse.preventDefault()
 }
 
 function stopErasing(mouse){
@@ -150,7 +149,6 @@ function stopErasing(mouse){
     prevY=undefined
     saveDrawing()
   }
-  mouse.preventDefault()
 }
 
 function clear(){
@@ -221,9 +219,12 @@ document.querySelectorAll('.basic_color_picker').forEach((picker)=>{
 })
 
 advancedPicker.addEventListener('input',()=> color=advancedPicker.value)
-
+advancedPicker.addEventListener('touchstart',()=> color=advancedPicker.value)
+advancedPicker.addEventListener('touchmove',()=> color=advancedPicker.value)
 
 widthPicker.addEventListener('input',()=>width=widthPicker.value)
+widthPicker.addEventListener('touchstart',()=>width=widthPicker.value)
+widthPicker.addEventListener('touchmove',()=>width=widthPicker.value)
 
 
 //draw
