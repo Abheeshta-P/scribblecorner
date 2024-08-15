@@ -249,9 +249,9 @@ pencilEraser.addEventListener('touchstart',pencilEraserSwitcher)
 
 //undo and clear canvas
 document.getElementById('undo').addEventListener('click',undo)
-document.getElementById('undo').addEventListener('touchstart', undo);
+// document.getElementById('undo').addEventListener('touchstart', undo);
 document.getElementById('clear').addEventListener('click',clear)
-document.getElementById('clear').addEventListener('touchstart', clear);
+// document.getElementById('clear').addEventListener('touchstart', clear);
 
 //for download
 downloadButton.addEventListener('click',()=>{
