@@ -1,6 +1,6 @@
-<h1 align="center"> ✍🏻 Scribble Corner ✍🏻 </h1>
+<h1 align="center"> Scribble Corner ✍🏻 </h1>
 
-Welcome to **ScribbleCorner**! 🎨✏️ A simple yet powerful drawing application that lets you unleash your creativity right in your browser. With an intuitive interface and essential drawing tools, ScribbleCorner is designed for both casual doodlers and serious artists.
+Welcome to **ScribbleCorner**! 🎨✏️ A simple yet powerful drawing application that lets you unleash your creativity right in your browser. 
 
 ## 🎨 **Features**
 
