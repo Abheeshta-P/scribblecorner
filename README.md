@@ -2,14 +2,12 @@
 
 Welcome to **ScribbleCorner**! 🎨✏️ A simple yet powerful drawing application that lets you unleash your creativity right in your browser. With an intuitive interface and essential drawing tools, ScribbleCorner is designed for both casual doodlers and serious artists.
 
----
-
 ## 🎨 **Features**
 
 - **Draw**: Create sketches with a variety of brush sizes and colors.
 - **Erase**: Easily correct mistakes with an eraser tool.
 - **Undo**: Made a mistake? No problem! Use the undo feature to revert your last action.
-
+- **Download**: Download your drawing as a PNG image.
 
 ## 💻 **Tech Stack**
 
