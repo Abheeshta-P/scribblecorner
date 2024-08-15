@@ -7,6 +7,7 @@ const widthPicker=document.getElementById('width_setter')
 const advancedPicker=document.getElementById('color_picker')
 const pencilEraser=document.querySelector('.pen_eraser img')
 const toolBox=document.querySelector('.tool_box')
+const downloadButton=document.querySelector('.download')
 
 let backupDrawing=[]
 let backupIndex=-1
@@ -167,9 +168,9 @@ window.addEventListener('resize',()=>{
 
 window.addEventListener('load',loadContent)
 
-toolBox.addEventListener('mouseenter',()=>{
-  stopDrawing()
-  stopErasing()
+toolBox.addEventListener('mouseenter',(mouse)=>{
+  stopDrawing(mouse)
+  stopErasing(mouse)
 })
 
 //change color and width
@@ -201,7 +202,8 @@ canvas.addEventListener("mouseup",stopErasing,false)
 pencilEraser.addEventListener('click',(mouse)=>{
   if(!eraser){
     eraser=true
-    pencilEraser.setAttribute('src','./image/pencil.png')
+    pencilEraser.setAttribute('src','./images/pencil.png')
+    pencilEraser.setAttribute('title','pencil')
     //now eraser
     canvas.removeEventListener("touchstart",startDrawing,false)
     canvas.removeEventListener("mousedown",startDrawing,false)
@@ -210,7 +212,8 @@ pencilEraser.addEventListener('click',(mouse)=>{
   }
   else{
     eraser=false
-    pencilEraser.setAttribute('src','./image/eraser.png')
+    pencilEraser.setAttribute('src','./images/eraser.png')
+    pencilEraser.setAttribute('title','eraser')
     //now pencil
     canvas.removeEventListener("touchstart",startErasing,false)
     canvas.removeEventListener("mousedown",startErasing,false)
@@ -222,6 +225,28 @@ pencilEraser.addEventListener('click',(mouse)=>{
 //undo and clear canvas
 document.getElementById('undo').addEventListener('click',undo)
 document.getElementById('clear').addEventListener('click',clear)
+
+//for download
+downloadButton.addEventListener('click',()=>{
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = canvas.width;
+  tempCanvas.height = canvas.height;
+  const tempCtx = tempCanvas.getContext('2d');
+
+  tempCtx.fillStyle = '#ffffff'; 
+  tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+  tempCtx.drawImage(canvas, 0, 0);
+   
+  //with white background get the image
+  const url=tempCanvas.toDataURL('image/png',100)
+  const downloadLink = document.createElement('a');
+  downloadLink.href = url;
+  downloadLink.download = 'canvas-image.png'; 
+  document.body.appendChild(downloadLink);
+  downloadLink.click();  
+  document.body.removeChild(downloadLink); 
+})
 
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault()
