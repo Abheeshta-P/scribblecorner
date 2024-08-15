@@ -10,7 +10,7 @@ body{
   background-color: rgba(241, 237, 234, 0.685);
   box-shadow: 0 0 1px black;
   width: max-content;
-  padding-inline: 15px;
+  padding-inline: 10px;
   position: relative;
   border-radius: 20px;
   border: none;

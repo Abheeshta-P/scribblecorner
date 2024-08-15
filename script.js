@@ -121,7 +121,7 @@ function eraseIT(mouse){
       getTouchData(mouse)
     else
      getMouseData(mouse)
-    
+
     draw.save()
     //The area where the new drawing overlaps with the existing content will be erased.
     draw.globalCompositeOperation = 'destination-out'
@@ -192,12 +192,14 @@ toolBox.addEventListener('touchstart',(mouse)=>{
 
 //change color and width
 document.querySelectorAll('.basic_color_picker').forEach((picker)=>{
-  picker.addEventListener('click',()=> color=window.getComputedStyle(picker).backgroundColor)
+  picker.addEventListener('click',()=> color = window.getComputedStyle(picker).backgroundColor)
+  picker.addEventListener('touchstart', () => color = window.getComputedStyle(picker).backgroundColor);
 })
 
 advancedPicker.addEventListener('input',()=> color=advancedPicker.value)
 
 widthPicker.addEventListener('input',()=>width=widthPicker.value)
+
 
 //draw
 canvas.addEventListener("touchstart",startDrawing,false)
@@ -241,7 +243,9 @@ pencilEraser.addEventListener('click',(mouse)=>{
 
 //undo and clear canvas
 document.getElementById('undo').addEventListener('click',undo)
+document.getElementById('undo').addEventListener('touchstart', undo);
 document.getElementById('clear').addEventListener('click',clear)
+document.getElementById('clear').addEventListener('touchstart', clear);
 
 //for download
 downloadButton.addEventListener('click',()=>{
