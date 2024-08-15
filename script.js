@@ -171,6 +171,28 @@ function undo(mouse){
   } 
 }
 
+function pencilEraserSwitcher(){
+  if(!eraser){
+    eraser=true
+    pencilEraser.setAttribute('src','./images/pencil.png')
+    pencilEraser.setAttribute('title','pencil')
+    //now eraser
+    canvas.removeEventListener("touchstart",startDrawing,false)
+    canvas.removeEventListener("mousedown",startDrawing,false)
+    canvas.addEventListener("touchstart",startErasing,false)
+    canvas.addEventListener("mousedown",startErasing,false)
+  }
+  else{
+    eraser=false
+    pencilEraser.setAttribute('src','./images/eraser.png')
+    pencilEraser.setAttribute('title','eraser')
+    //now pencil
+    canvas.removeEventListener("touchstart",startErasing,false)
+    canvas.removeEventListener("mousedown",startErasing,false)
+    canvas.addEventListener("touchstart",startDrawing,false)
+    canvas.addEventListener("mousedown",startDrawing,false)
+  }
+}
 //******* Event Listener ********
 
 window.addEventListener('resize',()=>{
@@ -197,8 +219,12 @@ document.querySelectorAll('.basic_color_picker').forEach((picker)=>{
 })
 
 advancedPicker.addEventListener('input',()=> color=advancedPicker.value)
+advancedPicker.addEventListener('touchstart',()=> color=advancedPicker.value)
+advancedPicker.addEventListener('touchmove',()=> color=advancedPicker.value)
 
 widthPicker.addEventListener('input',()=>width=widthPicker.value)
+widthPicker.addEventListener('touchstart',()=>width=widthPicker.value)
+widthPicker.addEventListener('touchmove',()=>width=widthPicker.value)
 
 
 //draw
@@ -218,28 +244,8 @@ canvas.addEventListener("mouseup",stopErasing,false)
 // canvas.addEventListener("mouseout",stopErasing,false)
 
 
-pencilEraser.addEventListener('click',(mouse)=>{
-  if(!eraser){
-    eraser=true
-    pencilEraser.setAttribute('src','./images/pencil.png')
-    pencilEraser.setAttribute('title','pencil')
-    //now eraser
-    canvas.removeEventListener("touchstart",startDrawing,false)
-    canvas.removeEventListener("mousedown",startDrawing,false)
-    canvas.addEventListener("touchstart",startErasing,false)
-    canvas.addEventListener("mousedown",startErasing,false)
-  }
-  else{
-    eraser=false
-    pencilEraser.setAttribute('src','./images/eraser.png')
-    pencilEraser.setAttribute('title','eraser')
-    //now pencil
-    canvas.removeEventListener("touchstart",startErasing,false)
-    canvas.removeEventListener("mousedown",startErasing,false)
-    canvas.addEventListener("touchstart",startDrawing,false)
-    canvas.addEventListener("mousedown",startDrawing,false)
-  }
-})
+pencilEraser.addEventListener('click',pencilEraserSwitcher)
+pencilEraser.addEventListener('touchstart',pencilEraserSwitcher)
 
 //undo and clear canvas
 document.getElementById('undo').addEventListener('click',undo)
