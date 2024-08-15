@@ -3,111 +3,181 @@ canvas.width=window.innerWidth-20
 canvas.height=window.innerHeight-110
 let draw=canvas.getContext('2d')
 
+const widthPicker=document.getElementById('width_setter')
+const advancedPicker=document.getElementById('color_picker')
+const pencilEraser=document.querySelector('.pen_eraser img')
+
 let backupDrawing=[]
 let backupAction=[]
+let currentPath=[]
 let backupIndex=-1
 let isDrawing=false
 let smoothTrace=false
 let color='black'
-let width='2'
+let width=widthPicker.value
+//for smoothness
+let prevX, prevY
 let eraser=false
+let isErasing=false
+let startX,startY,endX,endY
 
-function saveDrawing(){
-  backupDrawing.push(draw.getImageData(0,0,canvas.width,canvas.height))
-  backupIndex++
-  console.log(backupDrawing)
-  // backupAction.push()
+
+function redrawIT() {
+  smoothTrace = true
+  draw.clearRect(0, 0, canvas.width, canvas.height) // Clear the canvas
+
+  backupAction.forEach(action => {
+    draw.beginPath()
+    action.path.forEach((point, index) => {
+      if (index === 0) {
+        draw.moveTo(point.x, point.y)
+      } else {
+        draw.lineTo(point.x, point.y)
+      }
+    })
+    draw.strokeStyle = action.color
+    draw.lineWidth = action.width
+    draw.lineCap = "round"
+    draw.lineJoin = "round"
+    draw.stroke()
+    draw.closePath()
+  })
+
+  smoothTrace = false
 }
-function saveErasing(){
-  backupDrawing.push(draw.getImageData(0,0,canvas.width,canvas.height))
+
+
+
+function saveDrawing() {
+  // backupDrawing.push(draw.getImageData(0,0,canvas.width,canvas.height))
+  // console.log(backupDrawing)
+  // Save the drawing action with all necessary properties
+  backupAction.push({
+    path: [...currentPath], // Store the entire path
+    color: color,
+    width: width
+  })
   backupIndex++
-  console.log(backupDrawing)
-  // backupAction.push()
+  currentPath = []
 }
+
+
 
 //drawing
-//for smoothness
-let prevX, prevY;
 
 function drawIT(mouse) {
   if (isDrawing) {
-    const x = mouse.clientX - canvas.offsetLeft;
-    const y = mouse.clientY - canvas.offsetTop;
+    const x = mouse.clientX - canvas.offsetLeft
+    const y = mouse.clientY - canvas.offsetTop
 
     if (prevX !== undefined && prevY !== undefined) {
-      draw.beginPath();
+      draw.beginPath()
       if(smoothTrace)
-        draw.moveTo(prevX, prevY);
+        draw.moveTo(prevX, prevY)
       else
         draw.moveTo(x,y)
-      draw.lineTo(x, y);
-      draw.strokeStyle = color;
-      draw.lineWidth = width;
-      draw.lineCap = "round";
-      draw.lineJoin = "round";
-      draw.stroke();
+      draw.lineTo(x, y)
+      currentPath.push({ x, y }) // Store the current point
+      draw.strokeStyle = color
+      draw.lineWidth = width
+      draw.lineCap = "round"
+      draw.lineJoin = "round"
+      draw.stroke()
     }
 
-    prevX = x;
-    prevY = y;
+    prevX = x
+    prevY = y
     //next line to on move should be smooth so trace from previous point
     smoothTrace=true 
-    mouse.preventDefault();
+    mouse.preventDefault()
       }
 }
 
 
-function startDrawing(mouse){
-  //stop tracing this is new line
-  smoothTrace=false 
-  isDrawing=true
+function startDrawing(mouse) {
+  // Stop tracing as this is a new line
+  smoothTrace = false
+  isDrawing = true
+  
+  startX = mouse.clientX - canvas.offsetLeft
+  startY = mouse.clientY - canvas.offsetTop
+
+  // currentPath = [{ x: startX, y: startY }] // Start a new path
+  
   draw.beginPath()
-  draw.moveTo(mouse.clientX-canvas.offsetLeft,mouse.clientY-canvas.offsetTop)
+  draw.moveTo(startX, startY)
+  
   mouse.preventDefault()
-  // draw.moveTo(0,0)
 }
 
-function stopDrawing(mouse){
-  if(isDrawing){
+function stopDrawing(mouse) {
+  if (isDrawing) {
     draw.closePath()
-    isDrawing=false
-  }
-  mouse.preventDefault()
-  if(mouse.type!='mouseout'){
+    isDrawing = false
     
-    saveDrawing()
+    if (currentPath.length > 1) {
+      saveDrawing()
+    }
   }
+
+  mouse.preventDefault()
 }
+
 
 //eraser
-function eraseIT(mouse){
 
+ //splice can be put
+function eraseIT(mouse){
+//distance mouse and the line
+  //which line is near to mouse
+  if(isErasing){
+    let mouseX = mouse.clientX - canvas.offsetLeft
+        let mouseY = mouse.clientY - canvas.offsetTop
+
+        draw.save()
+        draw.globalCompositeOperation = 'destination-out'
+        draw.lineWidth = width // Eraser width
+        draw.beginPath()
+        draw.moveTo(mouseX, mouseY)
+        draw.lineTo(mouseX + 1, mouseY + 2) // Small line to act as an eraser point
+        draw.stroke()
+        draw.restore()
+
+    mouse.preventDefault()
+  }
 }
 
 function startErasing(mouse){
-
+  isErasing=true
+  mouse.preventDefault()
 }
 
 function stopErasing(mouse){
-
+  if(isErasing){
+    isErasing=false
+    saveErasing()
+  }
+  mouse.preventDefault()
 }
 
-
 function clear(){
-  backupDrawing=[]
+  // backupDrawing=[]
   backupIndex=-1
+  backupAction=[]
   draw.clearRect(0,0,canvas.width,canvas.height)
 }
 
-function undo(){
+function undo(mouse){
   if(backupIndex<=0){
     clear()
     return
   }
   else{
     backupIndex-=1
-    backupDrawing.pop()
-    draw.putImageData(backupDrawing[backupIndex], 0,0)
+    backupAction.pop()
+    redrawIT(mouse)
+    // backupDrawing.pop()
+    // draw.putImageData(backupDrawing[backupIndex], 0,0)
   } 
 }
 
@@ -123,10 +193,10 @@ document.querySelectorAll('.basic_color_picker').forEach((picker)=>{
   picker.addEventListener('click',()=>color=window.getComputedStyle(picker).backgroundColor)
 })
 
-const advancedPicker=document.getElementById('color_picker')
+
 advancedPicker.addEventListener('input',()=>color=advancedPicker.value)
 
-const widthPicker=document.getElementById('width_setter')
+
 widthPicker.addEventListener('input',()=>width=widthPicker.value)
 
 //draw
@@ -139,7 +209,13 @@ canvas.addEventListener("mouseup",stopDrawing,false)
 canvas.addEventListener("mouseout",stopDrawing,false)
 
 //eraser
-const pencilEraser=document.querySelector('.pen_eraser img')
+canvas.addEventListener("touchmove",eraseIT,false)
+canvas.addEventListener("mousemove",eraseIT,false)
+canvas.addEventListener("touchend",stopErasing,false)
+canvas.addEventListener("mouseup",stopErasing,false)
+canvas.addEventListener("mouseout",stopErasing,false)
+
+
 pencilEraser.addEventListener('click',(mouse)=>{
   if(!eraser){
     eraser=true
@@ -166,10 +242,10 @@ document.getElementById('undo').addEventListener('click',undo)
 document.getElementById('clear').addEventListener('click',clear)
 
 // document.addEventListener('contextmenu', function(e) {
-//   e.preventDefault();
-// });
+//   e.preventDefault()
+// })
 // document.addEventListener('keydown', function(e) {
 //   if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'U')) {
-//     e.preventDefault();
+//     e.preventDefault()
 //   }
-// });
+// })
