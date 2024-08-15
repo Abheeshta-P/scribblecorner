@@ -4,18 +4,28 @@ canvas.height=window.innerHeight-110
 let draw=canvas.getContext('2d')
 
 let backupDrawing=[]
+let backupAction=[]
 let backupIndex=-1
 let isDrawing=false
 let smoothTrace=false
 let color='black'
 let width='2'
+let eraser=false
 
 function saveDrawing(){
   backupDrawing.push(draw.getImageData(0,0,canvas.width,canvas.height))
   backupIndex++
+  console.log(backupDrawing)
+  // backupAction.push()
+}
+function saveErasing(){
+  backupDrawing.push(draw.getImageData(0,0,canvas.width,canvas.height))
+  backupIndex++
+  console.log(backupDrawing)
+  // backupAction.push()
 }
 
-
+//drawing
 //for smoothness
 let prevX, prevY;
 
@@ -63,9 +73,25 @@ function stopDrawing(mouse){
     isDrawing=false
   }
   mouse.preventDefault()
-  if(mouse.type!='mouseout')
-  saveDrawing()
+  if(mouse.type!='mouseout'){
+    
+    saveDrawing()
+  }
 }
+
+//eraser
+function eraseIT(mouse){
+
+}
+
+function startErasing(mouse){
+
+}
+
+function stopErasing(mouse){
+
+}
+
 
 function clear(){
   backupDrawing=[]
@@ -110,7 +136,30 @@ canvas.addEventListener("touchmove",drawIT,false)
 canvas.addEventListener("mousemove",drawIT,false)
 canvas.addEventListener("touchend",stopDrawing,false)
 canvas.addEventListener("mouseup",stopDrawing,false)
-// canvas.addEventListener("mouseout",stopDrawing,false)
+canvas.addEventListener("mouseout",stopDrawing,false)
+
+//eraser
+const pencilEraser=document.querySelector('.pen_eraser img')
+pencilEraser.addEventListener('click',(mouse)=>{
+  if(!eraser){
+    eraser=true
+    pencilEraser.setAttribute('src','./image/pencil.png')
+    //now eraser
+    canvas.removeEventListener("touchstart",startDrawing,false)
+    canvas.removeEventListener("mousedown",startDrawing,false)
+    canvas.addEventListener("touchstart",startErasing,false)
+    canvas.addEventListener("mousedown",startErasing,false)
+  }
+  else{
+    eraser=false
+    pencilEraser.setAttribute('src','./image/eraser.png')
+    //now pencil
+    canvas.removeEventListener("touchstart",startErasing,false)
+    canvas.removeEventListener("mousedown",startErasing,false)
+    canvas.addEventListener("touchstart",startDrawing,false)
+    canvas.addEventListener("mousedown",startDrawing,false)
+  }
+})
 
 //undo and clear canvas
 document.getElementById('undo').addEventListener('click',undo)

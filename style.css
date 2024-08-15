@@ -34,9 +34,9 @@ body{
 .blue{
   background-color: blue;
 }
-.green{
+/* .green{
   background-color: rgb(2, 158, 2);
-}
+} */
 #color_picker{
   width: 25px;
   height: 25px;
@@ -69,7 +69,15 @@ body{
   width: 100px;
 }
 
-
+.pen_eraser{
+  width: 25px;
+  height:25px;
+  cursor: pointer;
+}
+.pen_eraser img{
+  width: 100%;
+  height: 100%;
+}
 
 /* sm */
 @media (min-width: 640px) {
