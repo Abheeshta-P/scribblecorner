@@ -26,6 +26,10 @@ function getMouseData(mouse){
    x = mouse.clientX - canvas.offsetLeft
    y = mouse.clientY - canvas.offsetTop
 }
+function getTouchData(mouse){
+   x = mouse.touches[0].clientX - canvas.offsetLeft
+   y = mouse.touches[0].clientY - canvas.offsetTop
+}
 
 function saveCanvasState(){
    // Convert canvas content to a data URL (base64 encoded)
@@ -58,8 +62,10 @@ function saveDrawing() {
 
 function drawIT(mouse) {
   if (isDrawing) {
-    getMouseData(mouse)
-
+    if('ontouchstart' in window)
+      getTouchData(mouse)
+    else
+     getMouseData(mouse)
     if (prevX !== undefined && prevY !== undefined) {
       draw.beginPath()
       if(smoothTrace)
@@ -87,8 +93,11 @@ function startDrawing(mouse) {
   smoothTrace = false
   isDrawing = true
   
-  getMouseData(mouse)
-  
+  if('ontouchstart' in window)
+    getTouchData(mouse)
+  else
+   getMouseData(mouse)
+
   draw.beginPath()
   draw.moveTo(x,y)
 
@@ -108,7 +117,11 @@ function stopDrawing(mouse) {
 
 function eraseIT(mouse){
   if(isErasing){
-    getMouseData(mouse)
+    if('ontouchstart' in window)
+      getTouchData(mouse)
+    else
+     getMouseData(mouse)
+    
     draw.save()
     //The area where the new drawing overlaps with the existing content will be erased.
     draw.globalCompositeOperation = 'destination-out'
@@ -169,6 +182,10 @@ window.addEventListener('resize',()=>{
 window.addEventListener('load',loadContent)
 
 toolBox.addEventListener('mouseenter',(mouse)=>{
+  stopDrawing(mouse)
+  stopErasing(mouse)
+})
+toolBox.addEventListener('touchstart',(mouse)=>{
   stopDrawing(mouse)
   stopErasing(mouse)
 })
