@@ -11,7 +11,7 @@ Welcome to **ScribbleCorner**! 🎨✏️ A simple yet powerful drawing applicat
 
 ## 💻 **Tech Stack**
 
-- **HTML5 Canvas**: The core of ScribbleCorner for rendering and drawing.
+- **HTML5**: The core of ScribbleCorner for rendering and drawing.
 - **JavaScript**: For interactive features and tool functionality.
 - **CSS3**: For a responsive design.
 
