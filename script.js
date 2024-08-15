@@ -157,6 +157,7 @@ function clear(){
   backupDrawing=[]
   backupIndex=-1
   draw.clearRect(0,0,canvas.width,canvas.height)
+  saveCanvasState()
 }
 
 function undo(mouse){
@@ -168,6 +169,7 @@ function undo(mouse){
     backupIndex-=1
     backupDrawing.pop()
     draw.putImageData(backupDrawing[backupIndex], 0,0)
+    saveCanvasState()
   } 
 }
 
@@ -219,12 +221,9 @@ document.querySelectorAll('.basic_color_picker').forEach((picker)=>{
 })
 
 advancedPicker.addEventListener('input',()=> color=advancedPicker.value)
-advancedPicker.addEventListener('touchstart',()=> color=advancedPicker.value)
-advancedPicker.addEventListener('touchmove',()=> color=advancedPicker.value)
+
 
 widthPicker.addEventListener('input',()=>width=widthPicker.value)
-widthPicker.addEventListener('touchstart',()=>width=widthPicker.value)
-widthPicker.addEventListener('touchmove',()=>width=widthPicker.value)
 
 
 //draw

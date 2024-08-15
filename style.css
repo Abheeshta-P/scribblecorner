@@ -27,6 +27,7 @@ body{
   height: 25px;
   border-radius: 50%;
   cursor: pointer;
+  display: none;
 }
 .red{
   background-color: red;
@@ -38,8 +39,8 @@ body{
   background-color: rgb(2, 158, 2);
 } */
 #color_picker{
-  width: 25px;
-  height: 25px;
+  width: 65px;
+  height: 35px;
   border: none;
   outline: none;
   cursor: pointer;
@@ -67,7 +68,7 @@ body{
   /* cursor: url('/image/cursor.png'),auto; */
 }
 #width_setter{
-  width: 90px;
+  width: 150px;
 }
 
 .pen_eraser{
@@ -105,12 +106,10 @@ body{
     padding: 0.7em 1.5em;
     font-size: 14px;
   }
-  #width_setter{
-    width: 150px;
-  }
   .basic_color_picker{
     width: 30px;
     height: 30px;
+    display: block;
   }
   #color_picker{
     width: 30px;
