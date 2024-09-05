@@ -33,9 +33,9 @@ function getTouchData(mouse){
 
 function saveCanvasState(){
    // Convert canvas content to a data URL (base64 encoded)
-   const canvasData = canvas.toDataURL();
+   const canvasData = canvas.toDataURL()
    // Save the canvasData to localStorage 
-   localStorage.setItem('canvasState', canvasData);
+   localStorage.setItem('canvasState', canvasData)
 }
 
 function loadContent() {
@@ -193,6 +193,35 @@ function pencilEraserSwitcher(){
     canvas.addEventListener("mousedown",startDrawing,false)
   }
 }
+
+// download image
+
+function downloadImageWithBackground(backgroundOption) {
+  console.log(`Downloading image with ${backgroundOption} background...`)
+  const tempCanvas = document.createElement('canvas')
+  tempCanvas.width = canvas.width
+  tempCanvas.height = canvas.height
+  const tempCtx = tempCanvas.getContext('2d')
+
+
+  if (backgroundOption === 'white') {
+      tempCtx.fillStyle = 'white'
+      tempCtx.fillRect(0, 0, canvas.width, canvas.height)
+  } else if (backgroundOption === 'black') {
+    tempCtx.fillStyle = 'black'
+    tempCtx.fillRect(0, 0, canvas.width, canvas.height)
+  } else if (backgroundOption === 'transparent') {
+    tempCtx.clearRect(0, 0, canvas.width, canvas.height)
+  }
+
+  tempCtx.drawImage(canvas, 0, 0)
+  const imageURL = tempCanvas.toDataURL('image/png')
+  const link = document.createElement('a')
+  link.href = imageURL
+  link.download = `image_${backgroundOption}.png`
+  link.click()
+}
+
 //******* Event Listener ********
 
 window.addEventListener('resize',()=>{
@@ -251,24 +280,24 @@ document.getElementById('clear').addEventListener('click',clear)
 
 //for download
 downloadButton.addEventListener('click',()=>{
-  const tempCanvas = document.createElement('canvas');
-  tempCanvas.width = canvas.width;
-  tempCanvas.height = canvas.height;
-  const tempCtx = tempCanvas.getContext('2d');
+  document.getElementById('backgroundModal').style.display = 'flex'
+})
 
-  tempCtx.fillStyle = '#ffffff'; 
-  tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+document.getElementById('cancelBtn').addEventListener('click', function() {
+  document.getElementById('backgroundModal').style.display = 'none'
+})
 
-  tempCtx.drawImage(canvas, 0, 0);
-   
-  //with white background get the image
-  const url=tempCanvas.toDataURL('image/png',100)
-  const downloadLink = document.createElement('a');
-  downloadLink.href = url;
-  downloadLink.download = 'canvas-image.png'; 
-  document.body.appendChild(downloadLink);
-  downloadLink.click();  
-  document.body.removeChild(downloadLink); 
+
+document.getElementById('confirmBtn').addEventListener('click', function() {
+  const selectedBackground = document.querySelector('input[name="background"]:checked').value
+  downloadImageWithBackground(selectedBackground)
+  document.getElementById('backgroundModal').style.display = 'none'
+})
+
+document.querySelector('.modal').addEventListener('click',(e)=>{
+ if(e.target===e.currentTarget){
+   document.getElementById('backgroundModal').style.display = 'none'
+ }
 })
 
 document.addEventListener('contextmenu', function(e) {

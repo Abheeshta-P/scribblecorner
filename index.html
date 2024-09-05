@@ -19,6 +19,28 @@
   </div>
   <canvas id="drawing_canvas" class="canvas"></canvas>
   <div class="download"><img src="/images/download.png" alt="download" title="download"></div>
+      <!-- Modal for selecting background color -->
+      <div id="backgroundModal" class="modal">
+        <div class="modal-content">
+            <h2>Select Background Color</h2>
+            <div class="options">
+              <label>
+                <input type="radio" name="background" value="black"> Black
+            </label>
+            <label>
+                <input type="radio" name="background" value="white"> White
+            </label>
+            <label>
+                <input type="radio" name="background" value="transparent" checked> Transparent
+            </label>
+            </div>
+            <div class="buttons">
+            <button id="confirmBtn" class="button">Confirm</button>
+            <button id="cancelBtn" class="button">Cancel</button>
+            </div>
+            
+        </div>
+    </div>
   <script src="script.js"></script>
 </body>
 </html>
